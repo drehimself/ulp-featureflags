@@ -1,5 +1,7 @@
 <?php
 
+use YlsIdeas\FeatureFlags\Facades\Features;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,5 +14,11 @@
 */
 
 Route::get('/', function () {
+    // Features::turnOff('my-feature');
+    dd(Features::accessible('my-feature'));
     return view('welcome');
 });
+
+Route::get('/users', 'UsersController@index')->name('users.index');
+Route::get('/users/create', 'UsersController@create')->name('users.create')->middleware('feature:my-feature');
+Route::post('/users', 'UsersController@store')->name('users.store')->middleware('feature:my-feature');
